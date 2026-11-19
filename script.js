@@ -1,21 +1,23 @@
 /* ================= CONFIG — edit everything here ================= */
 const C={
- name:"Gittul", code:"020626", dateLine:"20 November is a special day.",
- wrong:["Hmm, not quite, my love… try again 💕","Almost! Think of something only we know 🌸","That’s not our code, cutie 🥺"],
+ name:"Gittul", code:"020626", code2:"201106", volume:0.25, dateLine:"20 November is a special day.",
+ hints:["Hmm, bukan itu, my love. Coba ingat-ingat lagi ❤️","Hint: It’s a date that means so much to us...","Psst... tanggal jadian kita, sayang 🌷"],
  praises:["You are the prettiest part of my every day.","Your smile makes everything feel better.","The world feels softer with you in it.","You deserve every beautiful thing in this universe.","You’re my favorite person, always.","If I could choose again, I’d still choose you.","You are more beautiful than all the flowers in this bouquet."],
- letter:"My dearest Gittul,\n\nHappy birthday, my love.\n\nToday is all about you. I hope you always know how special you are to me. Thank you for being part of my life, for every little moment, every laugh, and every memory we’ve created together.\n\nI hope this new chapter brings you endless happiness, beautiful opportunities, and everything your heart wishes for.\n\nI may not always have the perfect words, but I hope I can always make you feel loved, appreciated, and special.\n\nYou deserve the world, and if I could, I’d give you all the stars in it.\n\nWith all my love,\nYour favorite person.",
+ letter:"My dearest Gittul,\n\nHappy birthday, my love.\n\nToday is all about you. I hope you always know how special you are to me. Thank you for being part of my life, for every little moment, every laugh, and every memory we’ve created together.\n\nI hope this new chapter brings you endless happiness, beautiful opportunities, and everything your heart wishes for.\n\nI may not always have the perfect words, but I hope I can always make you feel loved, appreciated, and special.\n\nYou deserve the world, and if I could, I’d give you all the stars in it.\n\nWith all my love,\nMarcoy",
  /* put your photos in images/ next to this file */
- photos:[{src:"images/photo1.jpg",cap:"Our first adventure"},{src:"images/photo2.jpg",cap:"My favorite smile"},{src:"images/photo3.jpg",cap:"Just us"}],
+ photos:[{src:"images/photo1.jpeg",cap:"Our adventure"},{src:"images/photo2.jpeg",cap:"My favorite smile"},{src:"images/photo3.jpeg",cap:"Just us"}],
  memories:[
-  {t:"The day we first met",d:"Add date",x:"The moment everything started."},
-  {t:"Our first conversation",d:"Add date",x:"I didn’t know it would become my favorite."},
-  {t:"The little moments that made us smile",d:"Add date",x:"Small things, big feelings."},
-  {t:"Our unforgettable days together",d:"Add date",x:"Days I’d live again and again."},
-  {t:"Every little thing that became a beautiful memory",d:"Add date",x:"And we’re still writing."}],
+  {t:"The day we met again",d:"Semtember 2025",x:"The moment everything started."},
+  {t:"Our first conversation",d:"October 2025",x:"I didn’t know it would become my favorite."},
+  {t:"The little moments that made us smile",d:"Desember 2025",x:"Small things, big feelings."},
+  {t:"Our unforgettable days together",d:"9 may 2026",x:"Days I’d live again and again."},
+  {t:"Every little thing that became a beautiful memory",d:"2 june 2026",x:"And we’re still writing."}],
  /* put audio files in audio/ next to this file; song 1 is also the background music */
- songs:[{title:"Dancing In The Flames",artist:"The Weeknd (instrumental)",file:"audio/dancing-in-the-flames-instrumental.mp3"},
-        {title:"In Your Eyes",artist:"The Weeknd",file:"audio/in-your-eyes.mp3"},
-        {title:"Timeless",artist:"The Weeknd",file:"audio/timeless.mp3"}]
+ songs:[
+  {title:"Dancing In The Flames",artist:"The Weeknd",file:"audio/Dancing In The Flames - The Weeknd.mp3",cover:"https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/8c/72/e4/8c72e4e6-0fbb-68c7-58f6-79d9e41bc502/24UMGIM95646.rgb.jpg/1200x1200bf-60.jpg"},
+  {title:"In Your Eyes",artist:"The Weeknd",file:"audio/The Weeknd - In Your Eyes.mp3",cover:"https://www.dinealonestore.com/cdn/shop/products/20UMGIM12176.rgb_5000x.jpg?v=1674229238"},
+  {title:"Timeless",artist:"The Weeknd",file:"audio/The Weeknd - Timeless (feat. Playboi Carti).mp3",cover:"https://i0.wp.com/ourgenerationmusic.com/wp-content/uploads/2024/09/timeless.jpeg?fit=1024%2C1024&ssl=1"}
+ ]
 };
 /* ================================================================== */
 const $=(s,r=document)=>r.querySelector(s),mk=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
@@ -39,12 +41,48 @@ function confetti(n=45){if(RM)return;const c=["#ffc8d8","#f7a8c0","#fff","#e98aa
 function burst(n=50){for(let i=0;i<n;i++){const a=Math.random()*6.28,d=120+Math.random()*Math.max(innerWidth,innerHeight)*.6;const s=mk("i","bu","♥");s.style.cssText=`--x:${Math.cos(a)*d}px;--y:${Math.sin(a)*d}px;font-size:${14+Math.random()*22}px;animation-delay:${Math.random()*.5}s;font-style:normal`;document.body.appendChild(s);setTimeout(()=>s.remove(),3200)}}
 
 /* gate */
-setTimeout(()=>{$("#ld").hidden=true;$("#gf").hidden=false},1800);
-function tryCode(){const v=$("#code").value.trim();if(v===C.code)return unlock();
- $("#wr").textContent=C.wrong[Math.random()*C.wrong.length|0];const c=$("#code");c.classList.remove("shake");void c.offsetWidth;c.classList.add("shake")}
-$("#go").onclick=tryCode;$("#code").addEventListener("keydown",e=>{if(e.key==="Enter")tryCode()});
-$("#code").addEventListener("input",e=>{e.target.value=e.target.value.replace(/\D/g,"")});
-function unlock(){unlocked=true;$("#gate").classList.add("off");$("#m").hidden=false;["#jp","#jb","#mb"].forEach(s=>$(s).hidden=false);
+setTimeout(()=>{const l=$("#ld"),f=$("#gf");if(l)l.hidden=true;if(f)f.hidden=false},1800);
+let miss=0;
+let pinValue="";
+const pinDisplay=$("#pinDisplay");
+const pinDots=[...pinDisplay.querySelectorAll(".pin-dot")];
+
+function renderPin(){
+ pinDots.forEach((dot,i)=>dot.classList.toggle("filled",i<pinValue.length));
+ pinDisplay.setAttribute("aria-label",`${pinValue.length} dari 6 angka terisi`);
+}
+
+function clearPin(){
+ pinValue="";
+ renderPin();
+ $("#wr").textContent="";
+}
+
+$("#pinPad").addEventListener("click",e=>{
+ const key=e.target.closest("button");
+ if(!key)return;
+ if(key.dataset.digit!==undefined){
+  if(pinValue.length<6){pinValue+=key.dataset.digit;renderPin();}
+ }else if(key.dataset.action==="backspace"){
+  pinValue=pinValue.slice(0,-1);
+  renderPin();
+ }else if(key.dataset.action==="clear"){
+  clearPin();
+ }
+});
+
+function tryCode(){
+ if(pinValue===C.code||pinValue===C.code2)return unlock();
+ $("#wr").textContent=C.hints[Math.min(miss,C.hints.length-1)];
+ miss++;
+ pinDisplay.classList.remove("shake");
+ void pinDisplay.offsetWidth;
+ pinDisplay.classList.add("shake");
+ pinValue="";
+ renderPin();
+}
+$("#go").onclick=tryCode;
+function unlock(){unlocked=true;burst(24);$("#gate").classList.add("off");$("#m").hidden=false;["#jp","#jb","#mb"].forEach(s=>$(s).hidden=false);
  document.body.classList.remove("lock");scrollTo(0,0);setTimeout(()=>$("#gate").remove(),1000);play();prog()}
 
 /* gift */
@@ -59,11 +97,16 @@ setInterval(()=>{pr.style.opacity=0;setTimeout(()=>{pi=(pi+1)%C.praises.length;p
 $("#paper").textContent=C.letter;
 $("#env").onclick=()=>{$("#env").hidden=true;$("#eh").hidden=true;$("#paper").classList.add("open");setTimeout(()=>$("#paper").scrollIntoView({behavior:"smooth",block:"center"}),400)};
 
+/* overlays: focus in, focus trap, focus restored on close */
+let lastF=null;
+function openOv(o,f){lastF=document.activeElement;o.classList.add("on");setTimeout(()=>(f||$(".x",o)).focus(),60)}
+function closeOv(o){if(!o.classList.contains("on"))return;o.classList.remove("on");if(lastF&&lastF.focus)lastF.focus()}
+addEventListener("keydown",e=>{if(e.key!=="Tab")return;const o=$(".ov.on");if(!o)return;const f=[...o.querySelectorAll("button")].filter(b=>!b.closest("[hidden]"));if(!f.length)return;const a=f.indexOf(document.activeElement);if(e.shiftKey&&a<=0){e.preventDefault();f[f.length-1].focus()}else if(!e.shiftKey&&a===f.length-1){e.preventDefault();f[0].focus()}});
 /* photos + lightbox */
 const ph=i=>"data:image/svg+xml,"+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffd9e4"/><stop offset="1" stop-color="#f7a8c0"/></linearGradient></defs><rect width="200" height="200" fill="url(#g)"/><text x="100" y="118" font-size="64" text-anchor="middle" fill="#fff">♥</text><text x="100" y="170" font-size="14" text-anchor="middle" fill="#fff" font-family="sans-serif">photo ${i+1}</text></svg>`);
 const rot=[-4,3,-2];
-C.photos.slice(0,3).forEach((p,i)=>{const b=mk("button","po");b.style.setProperty("--r",rot[i]+"deg");const im=new Image();im.alt=p.cap;im.loading="lazy";im.src=p.src;im.onerror=()=>{im.onerror=null;im.src=ph(i)};b.append(im,mk("span",0,p.cap));b.onclick=()=>{$("#lb img").src=im.src;$("#lb").classList.add("on")};$("#pg").appendChild(b)});
-const lb=$("#lb"),closeLb=()=>lb.classList.remove("on");
+C.photos.slice(0,3).forEach((p,i)=>{const b=mk("button","po");b.style.setProperty("--r",rot[i]+"deg");const im=new Image();im.alt=p.cap;im.loading="lazy";im.src=p.src;im.onerror=()=>{im.onerror=null;im.src=ph(i)};b.append(im,mk("span",0,p.cap));b.onclick=()=>{$("#lb img").src=im.src;$("#lb img").alt=p.cap;openOv($("#lb"))};$("#pg").appendChild(b)});
+const lb=$("#lb"),closeLb=()=>closeOv(lb);
 $(".x",lb).onclick=closeLb;lb.onclick=e=>{if(e.target===lb)closeLb()};
 addEventListener("keydown",e=>{if(e.key==="Escape"){closeLb();closePop()}});
 
@@ -71,12 +114,22 @@ addEventListener("keydown",e=>{if(e.key==="Escape"){closeLb();closePop()}});
 C.memories.forEach(m=>{const c=mk("div","mc rv");c.append(mk("b",0,m.t),mk("em",0,m.d),mk("p",0,m.x));$("#tl").appendChild(c)});
 
 /* music: one shared Audio element => never overlaps, never restarts on scroll */
-const au=new Audio();au.preload="none";let cur=0,loopBg=true,ready=false;
+const au=new Audio();au.preload="none";au.volume=C.volume;let cur=0,loopBg=true,ready=false;
 const fmt=s=>isFinite(s)?Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0"):"--:--";
 const grad=["linear-gradient(135deg,#f7a8c0,#e98aa8)","linear-gradient(135deg,#ffd1dc,#d98ba0)","linear-gradient(135deg,#fde2ea,#f48fb1)"];
-function ui(){const s=C.songs[cur];$("#tt").textContent=s.title;$("#ta").textContent=s.artist;$("#cv").style.background=grad[cur%3];
- [...$("#tk").children].forEach((b,i)=>b.classList.toggle("on",i===cur));const on=!au.paused;$("#pp").textContent=on?"⏸":"▶";$("#eq").classList.toggle("on",on);$("#mb").textContent=on?"🎶":"🎵"}
-function load(i){cur=i;au.pause();au.src=C.songs[i].file;au.loop=loopBg&&i===0;$("#st").textContent="";ready=true;ui()}
+function ui(){
+ const s=C.songs[cur];
+ $("#tt").textContent=s.title;
+ $("#ta").textContent=s.artist;
+ $("#cv").src=s.cover;
+ $("#cv").alt="Album cover - "+s.title;
+ [...$("#tk").children].forEach((b,i)=>b.classList.toggle("on",i===cur));
+ const on=!au.paused;
+ $("#pp").textContent=on?"⏸":"▶";
+ $("#eq").classList.toggle("on",on);
+ $("#mb").textContent=on?"🎶":"🎵";
+}
+function load(i){cur=i;au.pause();au.src=C.songs[i].file;au.volume=C.volume;au.loop=loopBg&&i===0;$("#st").textContent="";ready=true;ui()}
 function play(){if(!ready)load(cur);au.play().catch(()=>{});ui()}
 function toggle(){if(au.paused)play();else{au.pause();ui()}}
 C.songs.forEach((s,i)=>{const b=mk("button",0,String(i+1));b.setAttribute("aria-label",s.title);b.onclick=()=>{loopBg=false;load(i);play()};$("#tk").appendChild(b)});
@@ -101,8 +154,8 @@ document.querySelectorAll(".rv:not(#bd)").forEach(e=>io.observe(e));
 
 /* final popup: once per session, only at the very end */
 const pop=$("#pop");let shown=false;try{shown=sessionStorage.getItem("gb")==="1"}catch(e){}
-function closePop(){pop.classList.remove("on");document.body.classList.remove("lock")}
+function closePop(){if(!pop.classList.contains("on"))return;closeOv(pop);document.body.classList.remove("lock")}
 new IntersectionObserver(es=>{if(es[0].isIntersecting&&unlocked&&!shown){shown=true;try{sessionStorage.setItem("gb","1")}catch(e){}
- setTimeout(()=>{pop.classList.add("on");document.body.classList.add("lock");confetti(70);if(!RM)rain(16,["🌸","🌷","💗"],"pt")},500)}},{threshold:.9}).observe($("#end"));
+ setTimeout(()=>{openOv(pop,$("#hug"));document.body.classList.add("lock");confetti(70);if(!RM)rain(16,["🌸","🌷","💗"],"pt")},500)}},{threshold:.9}).observe($("#end"));
 $(".x",pop).onclick=closePop;$("#cl").onclick=closePop;
-$("#hug").onclick=()=>{burst(60);document.body.classList.add("love");$("#c1").hidden=true;setTimeout(()=>{$("#c2").hidden=false;burst(30)},900)};
+$("#hug").onclick=()=>{burst(60);document.body.classList.add("love");$("#c1").hidden=true;setTimeout(()=>{$("#c2").hidden=false;$("#cl").focus();burst(30)},900)};

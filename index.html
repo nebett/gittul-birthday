@@ -1,25 +1,42 @@
 <!DOCTYPE html>
-  <html lang="en"><head><meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>For Gittul ❤️</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css"></head><body class="lock">
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>For Gittul ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;1,500&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"></head><body class="lock">
 
-    <div id="fx" aria-hidden="true"></div>
-      <div id="gate">
-      <div id="ld" class="ld">❤</div>
-      <div id="gf" hidden style="display:flex;flex-direction:column;align-items:center;gap:14px">
-        <h2>ENTER OUR SECRET CODE</h2>
-          <p class="sub">A little surprise is waiting for you, my love...</p>
-        <input id="code" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" placeholder="••••••" aria-label="Secret code">
-      <div id="wr" aria-live="polite"></div>
-        <button class="btn" id="go">Unlock My Surprise</button>
-      </div>
-    </div>
+<div id="fx" aria-hidden="true"></div>
+<div id="gate">
+ <div id="ld" style="text-align:center"><div class="ld">❤</div><p class="sub">Preparing something special for you...</p></div>
+ <div id="gf" hidden style="display:flex;flex-direction:column;align-items:center;gap:14px">
+  <h2>ENTER OUR SECRET CODE</h2>
+  <p class="sub">A little surprise is waiting for you, my love...</p>
+  <div class="pin-display" id="pinDisplay" aria-label="PIN belum diisi" aria-live="polite">
+   <span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span>
+   <span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span>
+  </div>
+  <div class="pin-pad" id="pinPad" aria-label="PIN keypad">
+   <button type="button" class="pin-key" data-digit="1">1</button>
+   <button type="button" class="pin-key" data-digit="2">2</button>
+   <button type="button" class="pin-key" data-digit="3">3</button>
+   <button type="button" class="pin-key" data-digit="4">4</button>
+   <button type="button" class="pin-key" data-digit="5">5</button>
+   <button type="button" class="pin-key" data-digit="6">6</button>
+   <button type="button" class="pin-key" data-digit="7">7</button>
+   <button type="button" class="pin-key" data-digit="8">8</button>
+   <button type="button" class="pin-key" data-digit="9">9</button>
+   <button type="button" class="pin-key pin-action" data-action="clear" aria-label="Clear PIN">C</button>
+   <button type="button" class="pin-key" data-digit="0">0</button>
+   <button type="button" class="pin-key pin-action" data-action="backspace" aria-label="Hapus satu angka">⌫</button>
+  </div>
+  <div id="wr" aria-live="polite"></div>
+  <button class="btn" id="go">Unlock My Surprise</button>
+ </div>
+</div>
 
-    <div id="jp" hidden><span>Our Little Journey ❤️</span><span id="jn">0%</span></div>
-    <div id="jb" hidden><i id="jf"></i></div>
-    <button id="mb" aria-label="Play or pause music" hidden>🎵</button>
+<div id="jp" hidden><span>Our Little Journey ❤️</span><span id="jn">0%</span></div>
+<div id="jb" hidden><i id="jf"></i></div>
+<button id="mb" aria-label="Play or pause music" hidden>🎵</button>
 
 <main id="m" hidden>
 <section class="sec">
@@ -49,17 +66,17 @@
 <section class="sec"><h2 class="rv">OUR PHOTO MEMORIES</h2><p class="sub rv">Little moments, endless memories.</p><div class="pg rv" id="pg"></div></section>
 <section class="sec"><h2 class="rv">MEMORIES WE’VE WRITTEN TOGETHER</h2><div class="tl" id="tl"></div></section>
 <section class="sec"><h2 class="rv">SPECIAL PLAYLIST</h2><p class="sub rv">A little soundtrack of us.</p>
- <div class="pl rv"><div class="cv" id="cv">♪</div><div class="eq" id="eq"><i></i><i></i><i></i><i></i></div><h3 id="tt"></h3><p id="ta"></p>
+ <div class="pl rv"><img class="cv" id="cv" src="" alt="Album cover" loading="lazy"><div class="eq" id="eq"><i></i><i></i><i></i><i></i></div><h3 id="tt"></h3><p id="ta"></p>
   <input type="range" id="sk" min="0" max="1000" value="0" aria-label="Seek"><div class="tm"><span id="t1">0:00</span><span id="t2">--:--</span></div>
   <div class="ct"><button id="pv" aria-label="Previous">⏮</button><button class="pp" id="pp" aria-label="Play or pause">▶</button><button id="nx" aria-label="Next">⏭</button><button id="mt" aria-label="Mute">🔊</button></div>
   <div class="tk" id="tk"></div><div id="st"></div></div></section>
 <footer class="sec" style="min-height:60svh"><p class="sub">With all my love, always.</p><div id="end" style="height:40px;width:100%"></div></footer>
 </main>
 
-<div class="ov" id="lb"><button class="x" aria-label="Close">✕</button><img alt="Memory"></div>
-<div class="ov" id="pop"><button class="x" aria-label="Close">✕</button>
+<div class="ov" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer"><button class="x" aria-label="Close">✕</button><img alt="Memory"></div>
+<div class="ov" id="pop" role="dialog" aria-modal="true" aria-label="Birthday surprise"><button class="x" aria-label="Close">✕</button>
  <div class="card" id="c1"><small>HAPPY BIRTHDAY</small><h1>THE MOST SPECIAL GITTULL</h1><p style="margin:0;font-style:italic">May your days always be as beautiful as your heart. I love you!</p><button class="btn" id="hug">One More Hug</button></div>
- <div class="card" id="c2" hidden><h1 style="font-size:1.6rem">Come here, you deserve the biggest hug in the world.</h1><p class="sub" style="font-size:1.6rem">One last thing... I love you, Gittul. More than words could ever explain.</p><button class="btn" id="cl">Close</button></div>
+ <div class="card" id="c2" hidden><h1 style="font-size:1.6rem">Come here, you deserve the biggest hug in the world.</h1><p class="sub" style="font-size:1.6rem">One last thing... I love you. More than words could ever explain.</p><button class="btn" id="cl">Close</button></div>
 </div>
 
 <script src="script.js"></script></body></html>
